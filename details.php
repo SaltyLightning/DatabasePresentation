@@ -148,6 +148,14 @@ else{
                             $overall["winrate"] = $winrate;
                             continue;
                         }
+                        $sql = "SELECT friendly_name from hero_friendly WHERE api_name = \"$hname\"";
+                        $temp = $conn->query($sql);
+                        if (!isset($temp)) {
+                            $hname = "error";
+                        } else {
+                            $row = $temp->fetch_array();
+                            $hname = $row[0];
+                        }
                         echo "<tr>";
                             echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
                             echo "<td>$games</td>";

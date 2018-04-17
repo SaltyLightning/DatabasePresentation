@@ -21,12 +21,10 @@ if (isset($_SESSION['name'])){
     $sql = "SELECT * from general_stats WHERE tag = \"$name\" ORDER BY hero";
     $heroes = $conn->query($sql);
     if ($heroes->num_rows !== 0) {
-        // echo "New record created successfully\n";
     } else {
 //        header("Location: details.php");
         $heros[0]["hero"] = "Not found";
         $heros[0]["winrate"] = $name;
-
     }
 }
 else{
@@ -147,6 +145,14 @@ else{
                         $overall["losses"] = $losses;
                         $overall["winrate"] = $winrate;
                         continue;
+                    }
+                    $sql = "SELECT friendly_name from hero_friendly WHERE api_name = \"$hname\"";
+                    $temp = $conn->query($sql);
+                    if (!isset($temp)) {
+                        $hname = "error";
+                    } else {
+                        $row = $temp->fetch_array();
+                        $hname = $row[0];
                     }
                     echo "<tr>";
                     echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
