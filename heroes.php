@@ -18,7 +18,7 @@ if (isset($_SESSION['name'])){
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
-    $sql = "SELECT * from general_stats WHERE tag = \"$name\" ORDER BY hero";
+    $sql = "SELECT * from cat_stats WHERE tag = \"$name\" ORDER BY hero";
     $heroes = $conn->query($sql);
     if ($heroes->num_rows !== 0) {
     } else {
@@ -34,7 +34,7 @@ else{
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Overstatted</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -48,7 +48,7 @@ else{
         }
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
+        .row.content {height: 2000px}
 
         /* Set gray background color and 100% height */
         .sidenav {
@@ -81,29 +81,29 @@ else{
 </head>
 <body>
 
-<!--<nav class="navbar navbar-inverse">-->
-<!--    <div class="container-fluid">-->
-<!--        <div class="navbar-header">-->
-<!--            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--            </button>-->
-<!--            <a class="navbar-brand" href="#">Logo</a>-->
-<!--        </div>-->
-<!--        <div class="collapse navbar-collapse" id="myNavbar">-->
-<!--            <ul class="nav navbar-nav">-->
-<!--                <li class="active"><a href="#">Home</a></li>-->
-<!--                <li><a href="#">About</a></li>-->
-<!--                <li><a href="#">Projects</a></li>-->
-<!--                <li><a href="#">Contact</a></li>-->
-<!--            </ul>-->
-<!--            <ul class="nav navbar-nav navbar-right">-->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.php">Overstatted</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <!--                <li class="active"><a href="#">Home</a></li>-->
+                <!--                <li><a href="#">About</a></li>-->
+                <!--                <li><a href="#">Projects</a></li>-->
+                <!--                <li><a href="#">Contact</a></li>-->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
 <!--                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container-fluid text-center">
     <div class="row content">
@@ -118,16 +118,18 @@ else{
             <p><a href="suggestions.php">Suggestions</a></p>
             <p><a href="heroes.php">Hero Details</a></p>
             <p><a href="details.php">Overall Details</a></p>
+            <p><a href="team.php">Team</a></p>
+            <p><a href="clear.php">Clear</a></p>
         </div>
         <div class="col-sm-8 text-left">
             <table class="table table-dark">
                 <thead>
                 <tr>
                     <th scope="col">Hero</th>
-                    <th scope="col">Games Played</th>
-                    <th scope="col">Wins</th>
-                    <th scope="col">Losses</th>
-                    <th scope="col">Winrate</th>
+                    <th scope="col">Eliminations per game</th>
+                    <th scope="col">Deaths per game</th>
+                    <th scope="col">Final Blows Percentage</th>
+                    <th scope="col">Healing per game</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -135,15 +137,17 @@ else{
                 $overall;
                 foreach ($heroes as $hero){
                     $hname = $hero["hero"];
-                    $games = $hero["games_played"];
-                    $wins = $hero["wins"];
-                    $losses = $hero["losses"];
-                    $winrate = $hero["winrate"];
+                    $elims = $hero["elims"];
+                    $deaths = $hero["deaths"];
+//                    $final_blows = number_format((float) $hero["final_blows"], '.', '');
+                    $final_blows = number_format((float) $hero["final_blows"] * 100, 2, ".", '');
+                    $healing = $hero["healing"];
                     if(!isset($hname)){
-                        $overall["games"] = $games;
-                        $overall["wins"] = $wins;
-                        $overall["losses"] = $losses;
-                        $overall["winrate"] = $winrate;
+                        $overall["hero"] = $hero["hero"];
+                        $overall["elims"] = $hero["elims"];
+                        $overall["deaths"] = $hero["deaths"]     ;
+                        $overall["final_blows"] = $hero["final_blows"];
+                        $overall["healing"] = $hero["healing"];
                         continue;
                     }
                     $sql = "SELECT friendly_name from hero_friendly WHERE api_name = \"$hname\"";
@@ -156,24 +160,24 @@ else{
                     }
                     echo "<tr>";
                     echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
-                    echo "<td>$games</td>";
-                    echo "<td>$wins</td>";
-                    echo "<td>$losses</td>";
-                    echo "<td>$winrate%</td>";
+                    echo "<td>$elims</td>";
+                    echo "<td>$deaths</td>";
+                    echo "<td>$final_blows%</td>";
+                    echo "<td>$healing</td>";
                     echo "</tr>";
                 }
-                $hname =  "Overall";
-                $games = $overall["games"];
-                $wins = $overall["wins"];
-                $losses = $overall["losses"];
-                $winrate = $overall["winrate"];
-                echo "<tr>";
-                echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
-                echo "<td>$games</td>";
-                echo "<td>$wins</td>";
-                echo "<td>$losses</td>";
-                echo "<td>$winrate%</td>";
-                echo "</tr>";
+//                $hname =  "Overall";
+//                $elims = $overall["elims"];
+//                $deaths = $overall["deaths"];
+//                $final_blows = $overall["final_blows"];
+//                $healing = $overall["healing"];
+//                echo "<tr>";
+//                echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
+//                echo "<td>$elims</td>";
+//                echo "<td>$deaths</td>";
+//                echo "<td>$final_blows%</td>";
+//                echo "<td>$healing</td>";
+//                echo "</tr>";
                 ?>
                 </tbody>
             </table>

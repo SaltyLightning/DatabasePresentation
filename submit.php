@@ -48,6 +48,15 @@ if (isset($tag)) {
     $losses = $decoded["competitive"]["global"]["games_lost"];
     $gp = $decoded["competitive"]["global"]["games_played"];
     $winrate =  round(($wins / $gp) * 100);
+    $elims = $decoded["competitive"]["global"]["eliminations"] / $gp;
+    $deaths = $decoded["competitive"]["global"]["deaths"];
+    if (!isset($deaths))
+        $deaths = 1;
+    $ed = $elims /  $deaths;
+    $final_blows = $decoded["competitive"]["global"]["final_blows"] / $elims;
+    $healing = $decoded["competitive"]["global"]["healing_done"];
+    if (!isset($decoded["competitive"]["global"]["healing_done"]))
+        $healing = 0;
     if (!$new_user) {
         $update = "UPDATE player SET sr = $sr WHERE tag = $tag";
     }
@@ -68,8 +77,15 @@ if (isset($tag)) {
     else{
         $sql = "UPDATE general_stats SET winrate = $winrate, "
         ."wins = $wins, losses = $losses, games_played = $gp "
-        .    "WHERE tag = $tag";
+        .    "WHERE tag = \"$tag\" AND hero IS NULL";
     }
+    if ($conn->query($sql) === TRUE) {
+        //echo "New record created successfully\n";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    $sql = "INSERT INTO team(team_leader) VALUE(\"$tag\")";
     if ($conn->query($sql) === TRUE) {
         //echo "New record created successfully\n";
     } else {
@@ -78,28 +94,69 @@ if (isset($tag)) {
     foreach ($decoded["competitive"]["heroes"] as $hname => $hero){
         $sql = "SELECT * from general_stats WHERE tag = \"$tag\" AND hero = $hname";
         $results = $conn->query($sql);
-        $wins = $hero["games_won"];
-        if (!isset($wins))
+        if (isset($hero["games_won"]))
+            $wins = $hero["games_won"];
+        else
             $wins = 0;
-        $losses = $hero["games_lost"];
-        if (!isset($losses))
+        if (!isset($hero["games_lost"]))
+            $losses = $hero["games_lost"];
+        else
             $losses = 0;
-        $gp = $hero["games_played"];
-        if (!isset($gp))
+        if (isset($hero["games_played"]))
+            $gp = $hero["games_played"];
+        else
             $gp = 0;
-        $winrate = $hero["win_percentage"];
-        if (!isset($winrate))
+        if (isset($hero["win_percentage"]))
+            $winrate = $hero["win_percentage"];
+        else
             $winrate = 0;
+        if (isset($hero["eliminations"]))
+            $elims = $hero["eliminations"] / ($gp >= 1 ? $gp : 1);
+        else
+            $elims = 0;
+        if (isset($hero["deaths"]))
+            $deaths = $hero["deaths"] / ($gp >= 1 ? $gp : 1);
+        else
+            $deaths = 1;
+        $ed = $elims / $deaths;
+        if ($elims > 0) {
+            if (isset($hero["final_blows"]))
+                $final_blows = $hero["final_blows"] / $hero["eliminations"];
+            else
+                $final_blows = 0;
+        }
+        else
+            $final_blows = 0;
+        if (isset($hero["healing_done"]))
+            $healing = $hero["healing_done"] / ($gp >= 1 ? $gp : 1);
+        else
+            $healing = 0;
+
         if ($new_user) {
             $sql = "INSERT INTO general_stats(winrate, wins, losses, games_played, tag, hero) VALUES"
                 . "($winrate, $wins, $losses, $gp, \"$tag\", \"$hname\")";
         }
         else{
             $sql = "UPDATE general_stats SET winrate = $winrate, "
-                ."wins = $wins, losses = $losses, games_played = $gp, hero = $hname "
+                ."wins = $wins, losses = $losses, games_played = $gp, hero = \"$hname\""
                 .    "WHERE tag = $tag";
         }
-        $_SESSION['sql'] = $sql;
+//        $_SESSION['sql'] = $sql;
+        if ($conn->query($sql) === TRUE) {
+            //echo "New record created successfully\n";
+        } else {
+//            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+        if ($new_user) {
+            $sql = "INSERT INTO cat_stats(elims, deaths, final_blows, healing, tag, hero) VALUES"
+                . "($elims, $deaths, $final_blows, $healing, \"$tag\", \"$hname\")";
+        }
+        else{
+            $sql = "UPDATE cat_stats SET deaths = $deaths, "
+                ."elims = $elims, final_blows = $final_blows, healing = $healing "
+                .    "WHERE tag = $tag AND hero = \"$hname\"";
+        }
+//        $_SESSION['sql'] .= $sql;
         if ($conn->query($sql) === TRUE) {
             //echo "New record created successfully\n";
         } else {
