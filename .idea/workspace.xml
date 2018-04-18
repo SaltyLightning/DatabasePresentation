@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80be9d5a-426d-4d3f-9e43-0e460c198056" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/clear.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/team.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/details.php" beforeDir="false" afterPath="$PROJECT_DIR$/details.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/heroes.php" beforeDir="false" afterPath="$PROJECT_DIR$/heroes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/old_index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/submit.php" beforeDir="false" afterPath="$PROJECT_DIR$/submit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/suggestions.php" beforeDir="false" afterPath="$PROJECT_DIR$/suggestions.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -101,23 +93,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="heroes.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="heroes.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/heroes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+            <state relative-caret-position="437">
+              <caret line="165" column="48" selection-start-line="165" selection-start-column="48" selection-end-line="165" selection-end-column="48" />
               <folding>
                 <element signature="e#3576#3612#0#PHP" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="suggestions.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="suggestions.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/suggestions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="618">
-              <caret line="185" column="5" lean-forward="true" selection-start-line="185" selection-start-column="5" selection-end-line="185" selection-end-column="5" />
+            <state relative-caret-position="530">
+              <caret line="181" column="13" lean-forward="true" selection-start-line="181" selection-start-column="13" selection-end-line="181" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -193,8 +186,8 @@
         <option value="$PROJECT_DIR$/team.php" />
         <option value="$PROJECT_DIR$/submit.php" />
         <option value="$PROJECT_DIR$/suggestions.php" />
-        <option value="$PROJECT_DIR$/heroes.php" />
         <option value="$PROJECT_DIR$/details.php" />
+        <option value="$PROJECT_DIR$/heroes.php" />
       </list>
     </option>
   </component>
@@ -319,12 +312,12 @@
       <workItem from="1523715766093" duration="8718000" />
       <workItem from="1523897325464" duration="5432000" />
       <workItem from="1523906124581" duration="3720000" />
-      <workItem from="1523934799459" duration="28735000" />
+      <workItem from="1523934799459" duration="29379000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61740000" />
+    <option name="totallyTimeSpent" value="62384000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -423,6 +416,7 @@
           <caret line="111" column="12" selection-start-line="111" selection-start-column="12" selection-end-line="117" selection-end-column="16" />
           <folding>
             <element signature="e#3576#3612#0#PHP" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -678,16 +672,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/heroes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
-          <folding>
-            <element signature="e#3576#3612#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/details.php">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -721,8 +705,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/suggestions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="185" column="5" lean-forward="true" selection-start-line="185" selection-start-column="5" selection-end-line="185" selection-end-column="5" />
+        <state relative-caret-position="530">
+          <caret line="181" column="13" lean-forward="true" selection-start-line="181" selection-start-column="13" selection-end-line="181" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/heroes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="165" column="48" selection-start-line="165" selection-start-column="48" selection-end-line="165" selection-end-column="48" />
+          <folding>
+            <element signature="e#3576#3612#0#PHP" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#td#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

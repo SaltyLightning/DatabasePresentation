@@ -76,6 +76,9 @@ else{
             height: 30px;
             width: 30px;
         }
+        .good{
+
+        }
     </style>
     <!--    <link href="main.css" rel="stylesheet">-->
 </head>
@@ -160,7 +163,7 @@ else{
                     }
                     echo "<tr>";
                     echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
-                    echo "<td>$elims</td>";
+                    echo "<td class='good'><span style=\"color: green; \"> $elims</span></td>";
                     echo "<td>$deaths</td>";
                     echo "<td>$final_blows%</td>";
                     echo "<td>$healing</td>";
