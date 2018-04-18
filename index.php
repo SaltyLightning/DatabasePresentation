@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if ($_SESSION["notfound"] == false || !isset($_SESSION["notfound"])) {
+    if (!isset($_SESSION["notfound"]) || $_SESSION["notfound"] == false) {
         session_abort();
         session_start();
     }
@@ -40,7 +40,7 @@
       </div>
     </nav>
     <?php
-        if ($_SESSION["notfound"] == true){
+        if (isset($_SESSION["notfound"]) && $_SESSION["notfound"] == true){
         echo '<div class="col-md-10 col-lg-8 col-xl-7 mx-auto">';
             echo '<h2 class="mb-3 text-dark">';
             echo "Failed to find that user. Please try again.";

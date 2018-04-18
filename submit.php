@@ -20,7 +20,7 @@ if (isset($tag)) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
-
+    $conn->autocommit(false);
     $ch = curl_init();
     $url = "https://owjs.ovh/overall/pc/us/$tag";
     $sql = "SELECT * from player WHERE tag = \"$tag\"";
@@ -147,21 +147,22 @@ if (isset($tag)) {
         } else {
 //            echo "Error: " . $sql . "<br>" . $conn->error;
         }
-        if ($new_user) {
+//        if ($new_user) {
             $sql = "INSERT INTO cat_stats(elims, deaths, final_blows, healing, tag, hero) VALUES"
                 . "($elims, $deaths, $final_blows, $healing, \"$tag\", \"$hname\")";
-        }
-        else{
-            $sql = "UPDATE cat_stats SET deaths = $deaths, "
-                ."elims = $elims, final_blows = $final_blows, healing = $healing "
-                .    "WHERE tag = $tag AND hero = \"$hname\"";
-        }
+//        }
+//        else{
+//            $sql = "UPDATE cat_stats SET deaths = $deaths, "
+//                ."elims = $elims, final_blows = $final_blows, healing = $healing "
+//                .    "WHERE tag = $tag AND hero = \"$hname\"";
+//        }
 //        $_SESSION['sql'] .= $sql;
         if ($conn->query($sql) === TRUE) {
             //echo "New record created successfully\n";
         } else {
 //            echo "Error: " . $sql . "<br>" . $conn->error;
         }
+        $conn->commit();
     }
     $_SESSION['name'] = $tag;
     $_SESSION['new_user'] = $new_user;

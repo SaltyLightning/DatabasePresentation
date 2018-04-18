@@ -18,15 +18,8 @@ if (isset($_SESSION['name'])){
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
-    $sql = "SELECT * from cat_stats WHERE tag = \"$name\" ORDER BY hero";
-    $heroes = $conn->query($sql);
-    if ($heroes->num_rows !== 0) {
-    } else {
-//        header("Location: details.php");
-        $heros[0]["hero"] = "Not found";
-        $heros[0]["winrate"] = $name;
-    }
-
+    $sql = "SELECT * from overall_stats ORDER BY Hero";
+    $overall_stats = $conn->query($sql);
 }
 else{
     $heroes[0]["hero"] = "Not found";
@@ -103,7 +96,7 @@ else{
                 <!--                <li><a href="#">Contact</a></li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-<!--                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+                <!--                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
             </ul>
         </div>
     </div>
@@ -111,19 +104,19 @@ else{
 
 <div class="container-fluid text-center">
     <div class="row content">
-<!--        <p>-->
-<!--            --><?php
-//            echo $_SESSION['str'];
-//            echo "<br>";
-//            echo $_SESSION['sql'];
-//            ?>
-<!--        </p>-->
+        <!--        <p>-->
+        <!--            --><?php
+        //            echo $_SESSION['str'];
+        //            echo "<br>";
+        //            echo $_SESSION['sql'];
+        //            ?>
+        <!--        </p>-->
         <div class="col-sm-2 sidenav">
             <p><a href="suggestions.php">Suggestions</a></p>
             <p><a href="heroes.php">Hero Stats</a></p>
             <p><a href="details.php">Winrate Details</a></p>
             <p><a href="overall.php">Overall Stats</a></p>
-<!--            <p><a href="clear.php">Clear</a></p>-->
+            <!--            <p><a href="clear.php">Clear</a></p>-->
         </div>
         <div class="col-sm-8 text-left">
             <table class="table table-dark">
@@ -131,7 +124,7 @@ else{
                 <tr>
                     <th scope="col">Hero</th>
                     <th scope="col">Eliminations per game</th>
-                    <th scope="col">Deaths per game</th>
+                    <th scope="col">Elim/Death ratio</th>
                     <th scope="col">Final Blows Percentage</th>
                     <th scope="col">Healing per game</th>
                 </tr>
@@ -139,13 +132,13 @@ else{
                 <tbody>
                 <?php
                 $overall;
-                foreach ($heroes as $hero){
-                    $hname = $hero["hero"];
-                    $elims = $hero["elims"];
-                    $deaths = $hero["deaths"];
+                foreach ($overall_stats as $hero){
+                    $hname = $hero["Hero"];
+                    $elims = $hero["Elims"];
+                    $deaths = $hero["E:D_Ratio"];
 //                    $final_blows = number_format((float) $hero["final_blows"], '.', '');
-                    $final_blows = number_format((float) $hero["final_blows"] * 100, 2, ".", '');
-                    $healing = $hero["healing"];
+                    $final_blows = number_format((float) $hero["Final_Blows"] * 100, 2, ".", '');
+                    $healing = $hero["Healing"];
                     if(!isset($hname)){
                         $overall["hero"] = $hero["hero"];
                         $overall["elims"] = $hero["elims"];
@@ -154,51 +147,49 @@ else{
                         $overall["healing"] = $hero["healing"];
                         continue;
                     }
-                    $sql = "SELECT friendly_name from hero_friendly WHERE api_name = \"$hname\"";
-                    $temp = $conn->query($sql);
-                    if (!isset($temp)) {
-                        $hname = "error";
-                    } else {
-                        $row = $temp->fetch_array();
-                        $hname = $row[0];
-                    }
-
-                    $sql = "SELECT * from overall_stats where Hero = \"$hname\" ORDER BY Hero";
-                    $overall_stats = $conn->query($sql);
-                    $overall_stats = $overall_stats->fetch_assoc();
-                    if ($elims >= $overall_stats["Elims"])
-                        $ecc = "127,255,0";
-                    else
-                        $ecc = "205,92,92";
-                    if ($final_blows >= ($overall_stats["Final_Blows"] * 100))
-                        $fcc = "127,255,0";
-                    else
-                        $fcc = "205,92,92";
-                    if ($healing >= $overall_stats["Healing"])
-                        $hcc = "127,255,0";
-                    else
-                        $hcc = "205,92,92";
+//                    $sql = "SELECT friendly_name from hero_friendly WHERE api_name = \"$hname\"";
+//                    $temp = $conn->query($sql);
+//                    if (!isset($temp)) {
+//                        $hname = "error";
+//                    } else {
+//                        $row = $temp->fetch_array();
+//                        $hname = $row[0];
+//                    }
+//
+//
+//                    if ($elims >= $overall_stats["Elims"])
+//                        $ecc = "127,255,0";
+//                    else
+//                        $ecc = "205,92,92";
+//                    if ($final_blows >= ($overall_stats["Final_Blows"] * 100))
+//                        $fcc = "127,255,0";
+//                    else
+//                        $fcc = "205,92,92";
+//                    if ($healing >= $overall_stats["Healing"])
+//                        $hcc = "127,255,0";
+//                    else
+//                        $hcc = "205,92,92";
 //                    echo "<tr style='background-color: rgba($cc, 0.5)'>";
                     echo "<tr>";
                     echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
-                    echo "<td style='background-color: rgba($ecc, 0.5)'>$elims</span></td>";
+                    echo "<td>$elims</span></td>";
                     echo "<td>$deaths</td>";
-                    echo "<td style='background-color: rgba($fcc, 0.5)'>$final_blows%</td>";
-                    echo "<td style='background-color: rgba($hcc, 0.5)'>$healing</td>";
+                    echo "<td>$final_blows%</td>";
+                    echo "<td>$healing</td>";
                     echo "</tr>";
                 }
-//                $hname =  "Overall";
-//                $elims = $overall["elims"];
-//                $deaths = $overall["deaths"];
-//                $final_blows = $overall["final_blows"];
-//                $healing = $overall["healing"];
-//                echo "<tr>";
-//                echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
-//                echo "<td>$elims</td>";
-//                echo "<td>$deaths</td>";
-//                echo "<td>$final_blows%</td>";
-//                echo "<td>$healing</td>";
-//                echo "</tr>";
+                //                $hname =  "Overall";
+                //                $elims = $overall["elims"];
+                //                $deaths = $overall["deaths"];
+                //                $final_blows = $overall["final_blows"];
+                //                $healing = $overall["healing"];
+                //                echo "<tr>";
+                //                echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
+                //                echo "<td>$elims</td>";
+                //                echo "<td>$deaths</td>";
+                //                echo "<td>$final_blows%</td>";
+                //                echo "<td>$healing</td>";
+                //                echo "</tr>";
                 ?>
                 </tbody>
             </table>

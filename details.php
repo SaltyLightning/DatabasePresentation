@@ -19,6 +19,13 @@ if (isset($_SESSION['name'])){
         die("Connection failed: " . mysqli_connect_error());
     }
     $sql = "SELECT * from general_stats WHERE tag = \"$name\" ORDER BY hero";
+    if (isset($_POST["last"])){
+        echo "here";
+        $sql = "SELECT * from general_stats WHERE tag = \"$name\" AND date >= ".
+         "date >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
+          AND date < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY " .
+            "ORDER BY hero";
+    }
     $heroes = $conn->query($sql);
     if ($heroes->num_rows !== 0) {
         // echo "New record created successfully\n";
@@ -119,10 +126,10 @@ else{
 <!--        </p>-->
         <div class="col-sm-2 sidenav">
             <p><a href="suggestions.php">Suggestions</a></p>
-            <p><a href="heroes.php">Hero Details</a></p>
-            <p><a href="details.php">Overall Details</a></p>
-            <p><a href="team.php">Team</a></p>
-            <p><a href="clear.php">Clear</a></p>
+            <p><a href="heroes.php">Hero Stats</a></p>
+            <p><a href="details.php">Winrate Details</a></p>
+            <p><a href="overall.php">Overall Stats</a></p>
+<!--            <p><a href="clear.php">Clear</a></p>-->
         </div>
         <div class="col-sm-8 text-left">
             <table class="table table-dark">
@@ -159,7 +166,11 @@ else{
                             $row = $temp->fetch_array();
                             $hname = $row[0];
                         }
-                        echo "<tr>";
+                        if ($winrate > 50)
+                            $cc = "127,255,0";
+                        else
+                            $cc = "205,92,92";
+                        echo "<tr style='background-color: rgba($cc, 0.5)'>";
                             echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
                             echo "<td>$games</td>";
                             echo "<td>$wins</td>";
@@ -167,21 +178,27 @@ else{
                             echo "<td>$winrate%</td>";
                         echo "</tr>";
                     }
-                    $hname =  "Overall";
-                    $games = $overall["games"];
-                    $wins = $overall["wins"];
-                    $losses = $overall["losses"];
-                    $winrate = $overall["winrate"];
-                    echo "<tr>";
-                    echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
-                    echo "<td>$games</td>";
-                    echo "<td>$wins</td>";
-                    echo "<td>$losses</td>";
-                    echo "<td>$winrate%</td>";
-                    echo "</tr>";
+                        $hname =  "Overall";
+                        $games = $overall["games"];
+                        $wins = $overall["wins"];
+                        $losses = $overall["losses"];
+                        $winrate = $overall["winrate"];
+                        echo "<tr>";
+                        echo "<td>$hname <img src='images/icons/$hname.png' class='hicons'></td>";
+                        echo "<td>$games</td>";
+                        echo "<td>$wins</td>";
+                        echo "<td>$losses</td>";
+                        echo "<td>$winrate%</td>";
+                        echo "</tr>";
                 ?>
                 </tbody>
             </table>
+<!--            <form action="details.php" method="post">-->
+<!--                    <div class="col-12 col-md-3">-->
+<!--                        <button name="last" type="submit" class="btn btn-block btn-lg btn-primary">View last week</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
         </div>
 <!--        <div class="col-sm-2 sidenav">-->
 <!--            <div class="well">-->
